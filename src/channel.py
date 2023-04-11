@@ -13,8 +13,8 @@ def printj(dict_to_print: dict) -> None:
 class Channel:
     """Класс для ютуб-канала"""
     # YT_API_KEY скопирован из гугла и вставлен в переменные окружения
-    #api_key: str = os.getenv('YT_API_KEY')
-    api_key: str = 'AIzaSyDK25Zi9td3dOqUbsUM8kfEOkJPfDutEtk'
+    api_key: str = os.getenv('YT_API_KEY')
+    #api_key: str = 'AIzaSyDK25Zi9td3dOqUbsUM8kfEOkJPfDutEtk'
     #youtube = build('youtube', 'v3', developerKey=api_key)
     def __init__(self, channel_id: str) -> None:
         """название канала
