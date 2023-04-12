@@ -13,8 +13,8 @@ def printj(dict_to_print: dict) -> None:
 class Channel:
     """Класс для ютуб-канала"""
     # YT_API_KEY скопирован из гугла и вставлен в переменные окружения
-    api_key: str = os.getenv('YT_API_KEY')
-    #api_key: str = 'AIzaSyDK25Zi9td3dOqUbsUM8kfEOkJPfDutEtk'
+    #api_key: str = os.getenv('YT_API_KEY')
+    api_key: str = 'AIzaSyDK25Zi9td3dOqUbsUM8kfEOkJPfDutEtk'
     #youtube = build('youtube', 'v3', developerKey=api_key)
     def __init__(self, channel_id: str) -> None:
         """название канала
@@ -27,15 +27,35 @@ class Channel:
         self.__channel_id = channel_id
 
         channel = self.get_service().channels().list(id=channel_id, part='snippet,statistics').execute()
-        print(channel)
+        #print(channel)
         if channel:
             self.title = channel['items'][0]['snippet']['title']
             self.desc = channel['items'][0]['snippet']['description']
             self.url = channel['items'][0]['snippet']['thumbnails']['default']['url']
-            self.subscribes_count = channel['items'][0]['statistics']['subscriberCount']
+            self.subscribes_count = int(channel['items'][0]['statistics']['subscriberCount'])
             self.video_count = channel['items'][0]['statistics']['videoCount']
             self.count_of_views = channel['items'][0]['statistics']['viewCount']
 
+    def __str__(self):
+        return f"{self.title} ({self.url})"
+
+    def __add__(self, other):
+        return self.subscribes_count + other.subscribes_count
+
+    def __sub__(self, other):
+        return self.subscribes_count - other.subscribes_count
+
+    def __lt__(self, other):
+        return self.subscribes_count < other.subscribes_count
+
+    def __le__(self, other):
+        return self.subscribes_count <= other.subscribes_count
+
+    def __gt__(self, other):
+        return self.subscribes_count > other.subscribes_count
+
+    def __ge__(self, other):
+        return self.subscribes_count >= other.subscribes_count
 
     @property
     def channel_id(self):
@@ -67,7 +87,7 @@ class Channel:
             "video_count": parameters.video_count,
                 }
 
-        with open(filename, 'w') as outfile:
+        with open(filename, 'w', encoding="utf-8") as outfile:
             json.dump(data, outfile, indent=4, ensure_ascii=False)
 
 
