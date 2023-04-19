@@ -16,18 +16,21 @@ class Channel:
     #api_key: str = os.getenv('YT_API_KEY')
     api_key: str = 'AIzaSyDK25Zi9td3dOqUbsUM8kfEOkJPfDutEtk'
     #youtube = build('youtube', 'v3', developerKey=api_key)
+
     def __init__(self, channel_id: str) -> None:
-        """название канала
-            описание канала
-            ссылка на канал
-            количество подписчиков
-            количество видео
-            общее количество просмотров"""
+        """
+        Создание экземпляра класса Phone.
+        :param title: название канала
+        :param desc:     описание канала
+        :param url:    ссылка на канал
+        :param subscribes_count:    количество подписчиков
+        :param video_count:    количество видео
+        :param count_of_views:    общее количество просмотров"""
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
         self.__channel_id = channel_id
 
         channel = self.get_service().channels().list(id=channel_id, part='snippet,statistics').execute()
-        #print(channel)
+
         if channel:
             self.title = channel['items'][0]['snippet']['title']
             self.desc = channel['items'][0]['snippet']['description']
@@ -60,7 +63,6 @@ class Channel:
     @property
     def channel_id(self):
         return self.__channel_id
-
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
