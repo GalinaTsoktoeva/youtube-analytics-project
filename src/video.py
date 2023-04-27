@@ -1,4 +1,6 @@
 from src.channel import Channel
+from src.httperror import HttpError
+
 
 class Video:
     """
@@ -16,7 +18,10 @@ class Video:
 
         video_response = Channel.get_service().videos().list(part='snippet,statistics,contentDetails,topicDetails', id=id_video).execute()
 
-        if video_response:
+        if not video_response['items']:
+            self.title = self.url = self.count_views = self.count_likes = None
+            raise HttpError("Пустой ответ")
+        else:
             self.title = video_response['items'][0]['snippet']['title']
             self.url = f"https://youtu.be/{self.id_video}"
             self.count_views = video_response['items'][0]['statistics']['viewCount']
